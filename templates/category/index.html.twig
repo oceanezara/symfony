@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %} {% block title %}Les catégories {% endblock %} {%
+block body %}
+<div class="container">
+  <h1 class="text-center my-5">Toutes les catégories</h1>
+  <ul class="list-group">
+    <div class="row">
+      <div class="col-md-6 mx-auto">
+        {% for category in categories %}
+        <li class="list-group-item">
+          <div class="box-category">
+            <span>{{ category.name }}</span>
+            <span
+              ><a
+                class="btn btn-outline-secondary"
+                href="{{
+                  path('category_show', { categoryName: category.name })
+                }}"
+                >Voir la liste des séries</a
+              ></span
+            >
+          </div>
+        </li>
+        {% else %}
+        <li class="list-group-item">Aucune catégorie trouvée.</li>
+        {% endfor %}
+      </div>
+    </div>
+  </ul>
+</div>
+{% endblock %}
