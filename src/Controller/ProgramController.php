@@ -9,6 +9,7 @@ use App\Repository\ProgramRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Program;
+use App\Repository\SeasonRepository;
 use Symfony\Component\BrowserKit\Request;
 
 /**
@@ -40,7 +41,7 @@ class ProgramController extends AbstractController
     * @Route("/{id<\d+>}",name="show", methods={"GET"})
     */
 
-    public function show(int $id, ProgramRepository $programRepository): Response
+    public function show(int $id, ProgramRepository $programRepository, SeasonRepository $seasonRepository): Response
     {
         $program = $programRepository->findOneBy(['id' => $id]);
 
@@ -50,9 +51,12 @@ class ProgramController extends AbstractController
             );
         }
 
+        $seasons = $seasonRepository->findBy(['program' => $program]);
+
         return $this->render('program/show.html.twig', [
             'id' => $id,
-            'program' => $program
+            'program' => $program,
+            'seasons' => $seasons
         ]);
     }
 }
