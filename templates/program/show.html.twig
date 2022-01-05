@@ -18,9 +18,10 @@
   </h1>
   <table class="table table-striped">
     <tr class="text-center">
-      <th>Numéro</th>
+      <th>Saison</th>
       <th>Résumé</th>
       <th>Année de sortie</th>
+      <th>Fiche</th>
     </tr>
     {% for season in seasons %}
     <tr>
@@ -33,7 +34,12 @@
       <td>
         {{ season.year }}
       </td>
+       <td>
+		<a class="btn btn-outline-secondary" href="{{ path("program_showSeason", { seasonId: season.id, programId:program.id }) }}">Voir la fiche</a>
+	  </td>
+      
     </tr>
+     
     {% else %}
     <tr>
       <td class="text-center" colspan="3">Aucune saison trouvée.</td>

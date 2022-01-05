@@ -9,6 +9,7 @@ use App\Repository\ProgramRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Program;
+use App\Repository\EpisodeRepository;
 use App\Repository\SeasonRepository;
 use Symfony\Component\BrowserKit\Request;
 
@@ -57,6 +58,36 @@ class ProgramController extends AbstractController
             'id' => $id,
             'program' => $program,
             'seasons' => $seasons
+        ]);
+    }
+
+    /**
+    * @Route("/{programId<\d+>}/season/{seasonId<\d+>}",name="showSeason", methods={"GET"})
+    */
+    public function showSeason(int $programId, int $seasonId, ProgramRepository $programRepository, SeasonRepository $seasonRepository, EpisodeRepository $episodeRepository)
+    {
+        $program = $programRepository->find($programId);
+
+        $seasons = $seasonRepository->find($seasonId);
+
+        $episodes = $episodeRepository->findBy(['season' => $seasons]);
+
+        if (!$program) {
+            throw $this->createNotFoundException(
+                'No program with id : ' . $programId . ' found in program\'s table.'
+            );
+        }
+
+        if (!$seasonId) {
+            throw $this->createNotFoundException(
+                'No program with id : ' . $seasonId . ' found in program\'s table.'
+            );
+        }
+
+        return $this->render('program/season_show.html.twig', [
+            'program' => $program,
+            'seasons' => $seasons,
+            'episodes' => $episodes
         ]);
     }
 }
