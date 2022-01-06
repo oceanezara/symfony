@@ -35,8 +35,8 @@
         {{ season.year }}
       </td>
        <td>
-		<a class="btn btn-outline-secondary" href="{{ path("program_showSeason", { seasonId: season.id, programId:program.id }) }}">Voir la fiche</a>
-	  </td>
+			<a href="{{ path('program_season_show', { programId:program.id, seasonId:season.id } ) }}" class="btn btn-outline-secondary">Détails</a>
+	   </td>
       
     </tr>
      

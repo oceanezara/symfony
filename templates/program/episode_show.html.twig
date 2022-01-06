@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fiche épisode {% endblock %} {%
+block body %}
+<div class="container">
+  <h1 class="text-center my-5">
+    Fiche épisode
+  </h1>
+  <table class="table table-striped">
+    <tr class="text-center">
+      <th>Titre de la série</th>
+      <th>Numéro de la saison</th>
+      <th>Numéro et titre de l'épisode</th>
+      <th>Synopsis</th>
+    </tr>
+    
+    <tr>
+      <td>
+        {{ program.title }}
+      </td>
+      <td>
+        {{ season.number }}
+      </td>
+      <td>
+        {{ episode.number }} - {{episode.title}}
+      </td>
+      <td>
+        {{ episode.number }} - {{episode.synopsis}}
+      </td
+    </tr>
+  </table>
+</div>
+{% endblock %}
