@@ -12,6 +12,42 @@
         </div>
     </div>
 
+    <div class="container">
+  <h1 class="text-center my-5">
+    Toutes les saisons de la série {{ program.title }}
+  </h1>
+  <table class="table table-striped">
+    <tr class="text-center">
+      <th>Saison</th>
+      <th>Résumé</th>
+      <th>Année de sortie</th>
+      <th>Fiche</th>
+    </tr>
+    {% for season in seasons %}
+    <tr>
+      <td>
+        {{ season.number }}
+      </td>
+      <td>
+        {{ season.description }}
+      </td>
+      <td>
+        {{ season.year }}
+      </td>
+       <td>
+		<a class="btn btn-outline-secondary" href="{{ path("program_showSeason", { seasonId: season.id, programId:program.id }) }}">Voir la fiche</a>
+	  </td>
+      
+    </tr>
+     
+    {% else %}
+    <tr>
+      <td class="text-center" colspan="3">Aucune saison trouvée.</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
     <a href="{{ path('program_index') }}">
         Retour à la liste des programmes
     </a>

@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les catégories {% endblock %} {%
+block body %}
+<div class="container">
+  <h1 class="text-center my-5">
+    {{ program.title }}
+  </h1>
+  <div class="media">
+        <img class="align-self-start mr-3" src="{{program.poster}}" alt="{{ program.title }} poster">
+        <div class="media-body">
+            
+            <p>{{ program.summary }}</p>
+            <p>Catégorie : {{ program.category.name }}</p>
+        </div>
+    </div>
+
+  <table class="table table-striped">
+    <tr class="text-center">
+      <th>Saison</th>
+      <th>Numéro</th>
+      <th>Année de sortie</th>
+    </tr>
+    <tr>
+      <td>
+        {{ seasons.number }}
+      </td>
+      <td>
+        {{ seasons.description }}
+      </td>
+      <td>
+        {{ seasons.year }}
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="container">
+    <div>
+    <table class="table table-striped">
+    <tr class="text-center">
+        <th>Titre</th>
+        <th>Numéro</th>
+        <th>Synopsis</th>
+        </tr>
+        {% for episode in episodes %}
+        <tr>
+        <td>
+            {{ episode.title }}
+        </td>
+        <td>
+            {{ episode.number }}
+        </td>
+        <td>
+            {{ episode.synopsis }}
+        </td>
+        </tr>
+        
+        {% else %}
+        <tr>
+        <td class="text-center" colspan="3">Aucune saison trouvée.</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+</div>
+{% endblock %}
