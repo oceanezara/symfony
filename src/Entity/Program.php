@@ -6,8 +6,11 @@ use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
+#[UniqueEntity('title', message:'Cette série existe déjà')]
 class Program
 {
     #[ORM\Id]
@@ -15,7 +18,10 @@ class Program
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: "ne me laisse pas tout vide")]
+    #[Assert\Length(max: 255, maxMessage:"La série saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")]
+    #[Assert\NotIdenticalTo('plus belle la vie', message:'On parle de vraies séries ici')]
+    #[ORM\Column(type: 'string', length: 255, unique:true)]
     private $title;
 
     #[ORM\Column(type: 'text')]
@@ -40,9 +46,13 @@ class Program
     #[ORM\OneToMany(mappedBy: 'program', targetEntity: Season::class)]
     private $seasons;
 
+    #[ORM\OneToMany(mappedBy: 'program', targetEntity: Episode::class)]
+    private $episodes;
+
     public function __construct()
     {
         $this->seasons = new ArrayCollection();
+        $this->episodes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -158,6 +168,36 @@ class Program
             // set the owning side to null (unless already changed)
             if ($season->getProgram() === $this) {
                 $season->setProgram(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Episode[]
+     */
+    public function getEpisodes(): Collection
+    {
+        return $this->episodes;
+    }
+
+    public function addEpisode(Episode $episode): self
+    {
+        if (!$this->episodes->contains($episode)) {
+            $this->episodes[] = $episode;
+            $episode->setProgram($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEpisode(Episode $episode): self
+    {
+        if ($this->episodes->removeElement($episode)) {
+            // set the owning side to null (unless already changed)
+            if ($episode->getProgram() === $this) {
+                $episode->setProgram(null);
             }
         }
 
