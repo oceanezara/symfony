@@ -13,23 +13,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/category', name: 'category_')]
-
 class CategoryController extends AbstractController
 {
     #[Route('/', name: 'index')]
-
-
     public function index(CategoryRepository $categoryRepository): Response
     {
         $categories = $categoryRepository->findAll();
 
         return $this->render('category/index.html.twig', [
-            'categories' => $categories,
+            'categories' => $categories
         ]);
     }
 
     #[Route('/new', name: 'new')]
-    public function new(Request $request, ManagerRegistry $managerRegistry): Response
+    public function new(Request $request, ManagerRegistry $doctrine): Response
     {
         $category = new Category;
 
@@ -39,9 +36,9 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $entityManager = $managerRegistry->getManager();
-            $entityManager->persist($category);
-            $entityManager->flush();
+            $em = $doctrine->getManager();
+            $em->persist($category);
+            $em->flush();
             return $this->redirectToRoute('category_index');
         }
 
@@ -49,8 +46,6 @@ class CategoryController extends AbstractController
             "form" => $form->createView(),
         ]);
     }
-
-
 
     #[Route('/{categoryName}', name: 'show')]
     public function show(string $categoryName, CategoryRepository $categoryRepository, ProgramRepository $programRepository): Response
