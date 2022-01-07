@@ -35,7 +35,7 @@ class CategoryController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $doctrine->getManager();
             $em->persist($category);
             $em->flush();
